@@ -9,33 +9,8 @@
 </head>
 <body class="bg-light">
 
-    <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow-lg">
-                <div class="modal-header bg-primary text-white justify-content-center">
-                    <h5 class="modal-title fw-bold">E-CTZN DISTRICT COMMAND</h5>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Authentication Level</label>
-                        <select id="userRole" class="form-select" onchange="Engine.toggleAdminField(this.value)">
-                            <option value="User">Registered Citizen/Volunteer</option>
-                            <option value="Admin">District Administrator (IAS/IPS)</option>
-                        </select>
-                    </div>
-                    <div id="adminKeyContainer" class="mb-3 d-none">
-                        <label class="form-label fw-bold">Department Security Key</label>
-                        <input type="password" id="adminKey" class="form-control" placeholder="••••••••">
-                    </div>
-                    <button onclick="Engine.login()" class="btn btn-primary w-100 fw-bold py-2">Initialize Interface</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark text-white min-vh-100 d-flex flex-column justify-content-between p-3">
                 <div>
                     <a href="#" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none border-bottom border-secondary">
@@ -43,29 +18,29 @@
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-4" id="menu">
                         <li class="nav-item w-100 mb-2">
-                            <a href="#" onclick="Engine.showSection('home')" id="link-home" class="nav-link text-white active align-middle px-0 px-sm-2">
+                            <a href="#" onclick="Engine.showSection('home')" id="link-home" class="nav-link text-white active px-2">
                                 <span class="ms-1 d-none d-sm-inline">District Summary</span>
                             </a>
                         </li>
                         <li class="nav-item w-100 mb-2">
-                            <a href="#" onclick="Engine.showSection('volunteer')" id="link-volunteer" class="nav-link text-white-50 align-middle px-0 px-sm-2">
+                            <a href="#" onclick="Engine.showSection('volunteer')" id="link-volunteer" class="nav-link text-white-50 px-2">
                                 <span class="ms-1 d-none d-sm-inline">Volunteer Deployment</span>
                             </a>
                         </li>
                         <li class="nav-item w-100 mb-2">
-                            <a href="#" onclick="Engine.showSection('task')" id="link-task" class="nav-link text-white-50 align-middle px-0 px-sm-2">
+                            <a href="#" onclick="Engine.showSection('task')" id="link-task" class="nav-link text-white-50 px-2">
                                 <span class="ms-1 d-none d-sm-inline">SOS / Reporting</span>
                             </a>
                         </li>
                         <li class="nav-item w-100 mb-2">
-                            <a href="#" onclick="Engine.showSection('dashboard')" id="link-dashboard" class="nav-link text-white-50 align-middle px-0 px-sm-2">
+                            <a href="#" onclick="Engine.showSection('dashboard')" id="link-dashboard" class="nav-link text-white-50 px-2">
                                 <span class="ms-1 d-none d-sm-inline">Live Ops Dashboard</span>
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div class="pb-4">
-                    <button onclick="location.reload()" class="btn btn-outline-danger w-100 btn-sm">TERMINAL EXIT</button>
+                    <button onclick="logout()" class="btn btn-outline-danger w-100 btn-sm">TERMINAL EXIT</button>
                 </div>
             </div>
 
@@ -84,232 +59,40 @@
                         <div class="col-md-6">
                             <div class="card shadow-sm border-0 h-100 text-center py-4">
                                 <div class="card-body">
-                                    <h6 class="text-uppercase text-muted ls-1">Authorized Responders</h6>
+                                    <h6 class="text-uppercase text-muted">Authorized Responders</h6>
                                     <h2 id="statVols" class="display-3 fw-bold text-success my-3">0</h2>
-                                    <p class="small text-muted">Ready for deployment</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card shadow-sm border-0 h-100 text-center py-4">
                                 <div class="card-body">
-                                    <h6 class="text-uppercase text-muted ls-1">Active Verified Missions</h6>
+                                    <h6 class="text-uppercase text-muted">Active Verified Missions</h6>
                                     <h2 id="statIncidents" class="display-3 fw-bold text-danger my-3">0</h2>
-                                    <p class="small text-muted">Operations in progress</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="volunteerSection" class="content-section d-none">
-                    <div class="card shadow-sm border-0 mb-4">
-                        <div class="card-header bg-white py-3">
-                            <h5 class="mb-0 fw-bold text-primary">Professional Volunteer Enrollment</h5>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="text-uppercase text-primary fw-bold mb-3 small border-bottom pb-2">Personal Credentials</h6>
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-6">
-                                    <label class="form-label">Legal Full Name</label>
-                                    <input type="text" id="volName" class="form-control" placeholder="As per Govt ID">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Government ID Number</label>
-                                    <input type="text" id="volGovID" class="form-control" placeholder="XXXX-XXXX-XXXX">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Age</label>
-                                    <input type="number" id="volAge" class="form-control">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Blood Group</label>
-                                    <select id="volBlood" class="form-select">
-                                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                                        <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <h6 class="text-uppercase text-primary fw-bold mb-3 small border-bottom pb-2">Deployment Specifics</h6>
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-6">
-                                    <label class="form-label">Service Area</label>
-                                    <select id="volLocation" class="form-select">
-                                        <option>Tambaram</option><option>Chengalpattu</option>
-                                        <option>Pallavaram</option><option>Maraimalai Nagar</option><option>Guduvancheri</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Availability Status</label>
-                                    <select id="volAvail" class="form-select">
-                                        <option value="Active">24/7 On-Call</option>
-                                        <option value="Partial">Weekends/Nights Only</option>
-                                        <option value="Emergency">Extreme Disasters Only</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Primary Skillset</label>
-                                    <select id="volMainSkill" class="form-select">
-                                        <option>Medical Specialist</option><option>Heavy Machinery/Rescue</option>
-                                        <option>Logistics & Supply</option><option>Search & Recovery</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Professional License No.</label>
-                                    <input type="text" id="volLicense" class="form-control" placeholder="MC-12345 (Optional)">
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Equipped Resources (Tools you own)</label>
-                                <div class="p-3 bg-light rounded border d-flex flex-wrap gap-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="vskill" value="First Aid Kit" id="v1">
-                                        <label class="form-check-label" for="v1">First Aid Kit</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="vskill" value="4x4 Vehicle" id="v2">
-                                        <label class="form-check-label" for="v2">4x4 Vehicle</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="vskill" value="Drone" id="v3">
-                                        <label class="form-check-label" for="v3">Drone</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="vskill" value="Rope/Harness" id="v4">
-                                        <label class="form-check-label" for="v4">Rope/Harness</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <button onclick="Engine.registerVolunteer()" class="btn btn-primary w-100 py-2">Submit Credentials for Official Audit</button>
-                        </div>
-                    </div>
-
-                    <div id="verificationAdminCard" class="card shadow-sm border-0 border-start border-4 border-warning d-none">
-                        <div class="card-header bg-warning bg-opacity-10 py-3">
-                            <h5 class="mb-0 fw-bold text-warning">PENDING AUDITS: PERSONNEL VERIFICATION</h5>
-                        </div>
-                        <div class="card-body">
-                            <div id="pendingVolunteerList" class="row g-3"></div>
-                        </div>
-                    </div>
                 </div>
-
-                <div id="taskSection" class="content-section d-none">
-                    
-                    <div id="adminReviewSection" class="alert alert-danger border-danger d-none mb-4" role="alert">
-                        <h4 class="alert-heading fw-bold"><i class="bi bi-exclamation-triangle"></i> CRITICAL: UNAUTHORIZED CITIZEN REPORTS</h4>
-                        <p>The following SOS signals have been received from unverified sources. Review and authorize to dispatch units.</p>
-                        <hr>
-                        <div id="reviewQueueList" class="row g-3"></div>
-                    </div>
-
-                    <div class="card shadow-sm border-0">
-                        <div class="card-header bg-white py-3">
-                            <h5 class="mb-0 fw-bold text-danger">Detailed Incident Intelligence</h5>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="text-uppercase text-danger fw-bold mb-3 small border-bottom pb-2">Situation Profile</h6>
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-6">
-                                    <label class="form-label">Incident Category</label>
-                                    <select id="taskType" class="form-select">
-                                        <option>Industrial/Fire</option><option>Medical Mass Casualty</option>
-                                        <option>Structural Collapse</option><option>Water/Flood Rescue</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Location</label>
-                                    <select id="taskLocation" class="form-select">
-                                        <option>Tambaram</option><option>Chengalpattu</option><option>Pallavaram</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Priority Level</label>
-                                    <select id="taskCriticality" class="form-select">
-                                        <option value="HIGH">Code Red (Immediate Life Threat)</option>
-                                        <option value="LOW">Code Amber (Urgent/Stable)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Max Responders</label>
-                                    <input type="number" id="taskMaxVolunteers" class="form-control" value="3">
-                                </div>
-                            </div>
-
-                            <h6 class="text-uppercase text-danger fw-bold mb-3 small border-bottom pb-2">On-Site Logistics</h6>
-                            <div class="row g-3 mb-4">
-                                <div class="col-12">
-                                    <label class="form-label">Exact Physical Address / GPS</label>
-                                    <input type="text" id="taskAddress" class="form-control" placeholder="e.g. Near New Bus Stand, Gate 3">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Victim Count</label>
-                                    <input type="number" id="taskVictims" class="form-control" value="1">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Reporter Contact No.</label>
-                                    <input type="text" id="taskPhone" class="form-control" placeholder="+91-XXXXX XXXXX">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">High-Risk Demographics</label>
-                                    <select id="taskDemo" class="form-select">
-                                        <option>Adults Only</option><option>Children Involved</option><option>Elderly/Disabled Involved</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Hazmat Presence</label>
-                                    <select id="taskHazmat" class="form-select">
-                                        <option>No</option><option>Yes (Chemicals/Gas Smoke)</option><option>Yes (Electrical/Live Wire)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">Required Deployment Skills</label>
-                                <div class="p-3 bg-light rounded border d-flex flex-wrap gap-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="tskill" value="Medical Aid" id="t1">
-                                        <label class="form-check-label" for="t1">Medical Aid</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="tskill" value="Heavy Rescue" id="t2">
-                                        <label class="form-check-label" for="t2">Heavy Rescue</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="tskill" value="Crowd Control" id="t3">
-                                        <label class="form-check-label" for="t3">Crowd Control</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <button onclick="Engine.createIncident()" class="btn btn-danger w-100 py-3 fw-bold">TRANSMIT SIGNAL FOR OFFICIAL REVIEW</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="dashboardSection" class="content-section d-none">
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <h5 class="text-uppercase text-secondary fw-bold mb-3 ps-2 border-start border-4 border-secondary">Awaiting Dispatch</h5>
-                            <div id="list-pending" class="d-flex flex-column gap-3"></div>
-                        </div>
-                        <div class="col-md-4">
-                            <h5 class="text-uppercase text-success fw-bold mb-3 ps-2 border-start border-4 border-success">Active Operations</h5>
-                            <div id="list-progress" class="d-flex flex-column gap-3"></div>
-                        </div>
-                        <div class="col-md-4">
-                            <h5 class="text-uppercase text-muted fw-bold mb-3 ps-2 border-start border-4 border-muted">Completed Logs</h5>
-                            <div id="list-resolved" class="d-flex flex-column gap-3"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Simple security check: redirect to login if no role is found
+        window.onload = function() {
+            if (!localStorage.getItem('userRole')) {
+                window.location.href = "login.html";
+            }
+        };
+
+        function logout() {
+            localStorage.removeItem('userRole');
+            window.location.href = "login.html";
+        }
+    </script>
 </body>
 </html>
