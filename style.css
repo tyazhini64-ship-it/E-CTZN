@@ -1,37 +1,96 @@
-/* Custom Overrides for E-CTZN */
+/* Custom Overrides for E-CTZN v2.0 */
 
-/* Sidebar Active State */
-.nav-pills .nav-link.active, 
-.nav-pills .show > .nav-link {
-    background-color: #198754; /* Bootstrap Success Color */
+/* Sidebar Navigation */
+.nav-pills .nav-link.active {
+    background-color: #198754; 
     color: white !important;
+    border-left: 4px solid #fff;
+    border-radius: 0 5px 5px 0;
+}
+
+.nav-link {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
 }
 
 .nav-link:hover {
     background-color: #343a40;
     color: #198754 !important;
+    padding-left: 15px;
 }
 
-/* Typography Tweaks */
-.ls-1 {
-    letter-spacing: 1px;
+/* --- NEW: Sensor Status Animations --- */
+.dot-pulse {
+    height: 8px;
+    width: 8px;
+    background-color: #198754;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    animation: pulse-green 2s infinite;
 }
 
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(25, 135, 84, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
+}
+
+/* --- NEW: Automated Alert Styles --- */
+.card-automated {
+    background: linear-gradient(45deg, #ffffff, #fff3cd);
+    border-left: 5px solid #ffc107 !important;
+}
+
+.badge-sensor {
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    background: #000;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+/* Card Improvements */
 .card {
-    transition: transform 0.2s;
+    border-radius: 12px;
+    transition: all 0.2s ease-in-out;
 }
 
-/* Subtle hover effect for dashboard cards */
-.emergency-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+.shadow-sm {
+    box-shadow: 0 .125rem .5rem rgba(0,0,0,.075)!important;
 }
 
-/* Utility to hide/show sections (Bootstrap uses d-none, but JS toggles this) 
-   We keep this class to ensure compatibility with your existing logic or 
-   we update JS to use d-none. I updated JS below to use d-none, 
-   but keeping this for safety if you revert JS. 
-*/
-.hidden {
-    display: none !important;
+.content-section {
+    animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typography & Layout */
+.ls-1 { letter-spacing: 1.5px; }
+
+/* Dashboard List Spacing */
+#list-pending, #list-progress, #list-resolved {
+    min-height: 100px;
+}
+
+/* Responsive fixes for small screens */
+@media (max-width: 768px) {
+    .display-3 { font-size: 2.5rem; }
+    .nav-link span { display: none; }
+}
+
+/* GPS Button Styling */
+.btn-outline-danger {
+    border-width: 1px;
+    font-weight: 600;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
 }
