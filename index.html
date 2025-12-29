@@ -77,7 +77,23 @@
                             <h1 class="display-6 fw-bold text-dark">Chengalpattu District, TN</h1>
                             <p class="text-muted mb-0">Unified Emergency Management Framework</p>
                         </div>
-                        <span class="badge bg-success">SYSTEM ONLINE</span>
+                        <div class="text-end">
+                            <span class="badge bg-success mb-1 d-block">SYSTEM ONLINE</span>
+                            <small class="text-muted font-monospace" style="font-size: 0.65rem;">LAT: 12.69 | LON: 79.97</small>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="bg-dark text-white p-2 px-3 rounded d-flex justify-content-between align-items-center small shadow-sm">
+                                <div class="d-flex gap-3">
+                                    <span><span class="dot-pulse"></span> <b class="text-success">USGS:</b> Monitoring Seismic</span>
+                                    <span><span class="dot-pulse"></span> <b class="text-info">WAQI:</b> Air Quality Ops</span>
+                                    <span><span class="dot-pulse"></span> <b class="text-warning">GEO:</b> Mobilization Active</span>
+                                </div>
+                                <div id="liveTime" class="text-white-50 font-monospace"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row g-4">
@@ -104,8 +120,9 @@
 
                 <div id="volunteerSection" class="content-section d-none">
                     <div class="card shadow-sm border-0 mb-4">
-                        <div class="card-header bg-white py-3">
+                        <div class="card-header bg-white py-3 d-flex justify-content-between">
                             <h5 class="mb-0 fw-bold text-primary">Professional Volunteer Enrollment</h5>
+                            <span class="badge bg-light text-primary border border-primary">Geolocation Assisted</span>
                         </div>
                         <div class="card-body">
                             <h6 class="text-uppercase text-primary fw-bold mb-3 small border-bottom pb-2">Personal Credentials</h6>
@@ -182,6 +199,11 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="alert alert-secondary py-2 small mb-3">
+                                <i class="bi bi-info-circle"></i> Submission will record your current GPS for rapid district mobilization.
+                            </div>
+                            
                             <button onclick="Engine.registerVolunteer()" class="btn btn-primary w-100 py-2">Submit Credentials for Official Audit</button>
                         </div>
                     </div>
@@ -199,8 +221,8 @@
                 <div id="taskSection" class="content-section d-none">
                     
                     <div id="adminReviewSection" class="alert alert-danger border-danger d-none mb-4" role="alert">
-                        <h4 class="alert-heading fw-bold"><i class="bi bi-exclamation-triangle"></i> CRITICAL: UNAUTHORIZED CITIZEN REPORTS</h4>
-                        <p>The following SOS signals have been received from unverified sources. Review and authorize to dispatch units.</p>
+                        <h4 class="alert-heading fw-bold"><i class="bi bi-exclamation-triangle"></i> CRITICAL: SYSTEM / CITIZEN ALERTS</h4>
+                        <p>Automated sensor triggers (Seismic/AQI) or unverified citizen reports. Action required for asset dispatch.</p>
                         <hr>
                         <div id="reviewQueueList" class="row g-3"></div>
                     </div>
@@ -220,7 +242,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Location</label>
+                                    <label class="form-label">Location Zone</label>
                                     <select id="taskLocation" class="form-select">
                                         <option>Tambaram</option><option>Chengalpattu</option><option>Pallavaram</option>
                                     </select>
@@ -241,7 +263,12 @@
                             <h6 class="text-uppercase text-danger fw-bold mb-3 small border-bottom pb-2">On-Site Logistics</h6>
                             <div class="row g-3 mb-4">
                                 <div class="col-12">
-                                    <label class="form-label">Exact Physical Address / GPS</label>
+                                    <label class="form-label d-flex justify-content-between">
+                                        Exact Physical Address / GPS
+                                        <button onclick="Engine.getGPS().then(loc => document.getElementById('taskAddress').value = loc)" class="btn btn-outline-danger py-0 px-2" style="font-size: 0.7rem; height: 20px;">
+                                            USE LIVE GPS
+                                        </button>
+                                    </label>
                                     <input type="text" id="taskAddress" class="form-control" placeholder="e.g. Near New Bus Stand, Gate 3">
                                 </div>
                                 <div class="col-md-6">
@@ -311,5 +338,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Simple interval for the live time in the sensor bar
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveTime').innerText = now.toLocaleTimeString();
+        }, 1000);
+    </script>
 </body>
 </html>
